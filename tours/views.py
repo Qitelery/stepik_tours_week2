@@ -196,11 +196,9 @@ class MainView(View):
     def get(self, request):
         title = "Stepik Travel"
         rand_tours = {}
-        for i in range(6):
+        while len(rand_tours)<6:
             r = random.choice(list(tours))
             rand_tours[r] = tours[r]
-            print(rand_tours[r])
-        print(*rand_tours.items(), sep = '\n')
         return render(request, 'tours/index.html', context={'title': title, 'rand_tours': rand_tours})
 
 
