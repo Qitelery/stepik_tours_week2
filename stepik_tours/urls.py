@@ -19,7 +19,7 @@ from tours.views import MainView, DepartureView, TourView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', MainView.as_view()),
-    path('departure/<str:depar_id>/', DepartureView.as_view()),
-    path('tour/<int:tour_id>/', TourView.as_view()),
+    path('', MainView.as_view(), name='stepik_title'),
+    path('departure/<str:depar_id>/', DepartureView.as_view(), name='depart'),
+    path('tour/<int:tour_id>/', TourView.as_view(), name='stepik_tours'),
 ]

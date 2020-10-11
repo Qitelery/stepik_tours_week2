@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 from django.views import View
 
@@ -7,7 +9,6 @@ subtitle = "Для тех, кого отвлекают дома"
 description = "Лучшие направления, где никто не будет вам мешать сидеть на берегу и изучать программирование, дизайн, разработку игр и управление продуктами"
 departures = {"msk": "Из Москвы", "spb": "Из Петербурга", "nsk": "Из Новосибирска", "ekb": "Из Екатеринбурга",
               "kazan": "Из Казани"}
-
 
 tours = {
     1: {
@@ -193,14 +194,30 @@ tours = {
 class MainView(View):
 
     def get(self, request):
-        return render(request, 'tours/index.html', {})
+        title = "Stepik Travel"
+        rand_tours = {}
+        for i in range(6):
+            r = random.choice(list(tours))
+            rand_tours[r] = tours[r]
+            print(rand_tours[r])
+        print(*rand_tours.items(), sep = '\n')
+        return render(request, 'tours/index.html', context={'title': title, 'rand_tours': rand_tours})
 
 
 class DepartureView(View):
 
     def get(self, request, depar_id):
         departure = departures.get(depar_id)
-        return render(request, "tours/departure.html", context={'departure': departure})
+        tours_depart = {}
+        amount_tours = 0
+        for tour in tours:
+            if tours[tour]['departure'] == depar_id:
+                tours_depart[tour] = tours[tour]
+                amount_tours += 1
+        return render(request, "tours/departure.html",
+                      context={'departure': departure,
+                               'tours_depart': tours_depart,
+                               'amount_tours': amount_tours})
 
 
 class TourView(View):
@@ -208,3 +225,6 @@ class TourView(View):
     def get(self, request, tour_id):
         tour = tours.get(tour_id)
         return render(request, 'tours/tour.html', context={'tour': tour})
+
+
+x = MainView()
